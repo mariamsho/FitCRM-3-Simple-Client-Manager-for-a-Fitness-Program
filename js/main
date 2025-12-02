@@ -1,0 +1,300 @@
+// --- Global Data Functions ---
+
+/**
+ * Retrieves client data from localStorage.
+ * @returns {Array} Array of client objects, or an empty array if none exists.
+ */
+function getClients() {
+    const clientsJSON = localStorage.getItem('fitClients');
+    return clientsJSON ? JSON.parse(clientsJSON) : [];
+}
+
+/**
+ * Saves the given client array back to localStorage.
+ * @param {Array} clients - The array of client objects to save.
+ */
+function saveClients(clients) {
+    localStorage.setItem('fitClients', JSON.stringify(clients));
+}
+
+// --- Page 1: New Client Form (client-form.html) ---
+if (document.querySelector('.client-form')) {
+    const clientForm = document.querySelector('.client-form');
+    
+    // Check for an 'editId' in the URL to determine if it's an Edit operation
+    const urlParams = new URLSearchParams(window.location.search);
+    const editId = urlParams.get('id');
+    const isEditMode = !!editId;
+
+    if (isEditMode) {
+        // Repopulate form for Edit
+        const clients = getClients();
+        const clientToEdit = clients.find(client => client.id === editId);
+
+        if (clientToEdit) {
+            document.querySelector('h2').textContent = 'Edit Client Details';
+            clientForm.querySelector('.action-button').textContent = 'Save Changes';
+            
+            // Populate fields
+            for (const key in clientToEdit) {
+                const input = document.getElementById(key);
+                if (input) {
+                    input.value = clientToEdit[key];
+                }
+            }
+        } else {
+            console.error('Client not found for ID:', editId);
+            // Optionally redirect to client list if ID is invalid
+        }
+    }
+
+
+    clientForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Basic form validation (browser's 'required' handles most)
+        if (!this.checkValidity()) {
+            this.reportValidity();
+            return;
+        }
+
+        const formData = new FormData(clientForm);
+        const newClient = {};
+        formData.forEach((value, key) => {
+            newClient[key] = value;
+        });
+
+        let clients = getClients();
+
+        if (isEditMode) {
+            // Update existing client
+            const index = clients.findIndex(client => client.id === editId);
+            if (index !== -1) {
+                // Preserve the original ID and merge changes
+                clients[index] = { ...clients[index], ...newClient };
+            }
+        } else {
+            // Add new client
+            // Unique ID generation using timestamp and a small random number
+            newClient.id = Date.now().toString(36) + Math.random().toString(36).substr(2, 5); 
+            // Placeholder for future features: training history
+            newClient.trainingHistory = newClient.trainingHistory || 'No history recorded.'; 
+            clients.push(newClient);
+        }
+
+        saveClients(clients);
+        
+        // Redirect to client list after save/update
+        window.location.href = 'client-list.html';
+    });
+}
+
+
+// --- Page 2: Client List View (client-list.html) ---
+if (document.querySelector('#clientTableBody')) {
+    const clientTableBody = document.getElementById('clientTableBody');
+    const searchInput = document.getElementById('clientSearch');
+    const searchButton = document.querySelector('.search-bar button');
+
+    /**
+     * Renders the client table with the provided list.
+     * @param {Array} clientList - Clients to display.
+     */
+    function renderClientList(clientList) {
+        clientTableBody.innerHTML = ''; // Clear existing rows
+        document.querySelector('h2').textContent = `Client Directory (${clientList.length} Clients)`;
+
+        if (clientList.length === 0) {
+            clientTableBody.innerHTML = '<tr><td colspan="6">No clients found.</td></tr>';
+            return;
+        }
+
+        clientList.forEach(client => {
+            const row = clientTableBody.insertRow();
+            // Store the client ID on the row for easy access
+            row.dataset.clientId = client.id; 
+            // Make the row clickable to View (Page 3)
+            row.style.cursor = 'pointer'; 
+            row.addEventListener('click', (e) => {
+                // Only navigate if the click target is not an action button
+                if (!e.target.closest('.action-button, .action-edit, .action-delete')) {
+                    window.location.href = `client-view.html?id=${client.id}`;
+                }
+            });
+
+            // Name, Email, Phone, Fitness Goal, Start Date
+            row.insertCell().textContent = client.fullName;
+            row.insertCell().textContent = client.email;
+            row.insertCell().classList.add('hide-on-mobile');
+            row.cells[2].textContent = client.phone || 'N/A';
+            row.insertCell().classList.add('hide-on-mobile');
+            row.cells[3].textContent = client.fitnessGoal;
+            row.insertCell().classList.add('hide-on-mobile');
+            row.cells[4].textContent = client.startDate;
+            
+            // Actions column
+            const actionsCell = row.insertCell();
+            actionsCell.innerHTML = `
+                <button class="action-edit button-small" data-id="${client.id}">Edit</button>
+                <button class="action-delete button-small" data-id="${client.id}">Delete</button>
+            `;
+        });
+    }
+
+    // Initial load of all clients
+    let allClients = getClients();
+    if (allClients.length === 0) {
+         // Add placeholder data if localStorage is empty (mimics the original static HTML)
+         const placeholderClients = [
+            { id: 'a1', fullName: 'Alex Johnson', email: 'alex@example.com', phone: '555-1234', fitnessGoal: 'Weight Loss', startDate: '2023-01-15', trainingHistory: 'Started strong, needs consistent cardio.' },
+            { id: 'b2', fullName: 'Sarah Chen', email: 'sarah@example.com', phone: '555-5678', fitnessGoal: 'Muscle Gain', startDate: '2023-03-20', trainingHistory: 'Excellent form, progressing well on lifts.' },
+            { id: 'c3', fullName: 'Michael Lee', email: 'mike@example.com', phone: '555-9012', fitnessGoal: 'General Fitness', startDate: '2023-05-10', trainingHistory: 'Focus on mobility and endurance.' },
+            { id: 'd4', fullName: 'Emily Davis', email: 'emily@example.com', phone: '555-3456', fitnessGoal: 'Weight Loss', startDate: '2023-07-01', trainingHistory: 'Consistent weekly check-ins, hitting targets.' },
+            { id: 'e5', fullName: 'David Kim', email: 'david@example.com', phone: '555-7890', fitnessGoal: 'Muscle Gain', startDate: '2023-08-25', trainingHistory: 'Advanced program started 1 week ago.' },
+        ];
+        allClients = placeholderClients;
+        saveClients(placeholderClients);
+    }
+
+    renderClientList(allClients);
+
+    // --- Action Handlers (Edit, Delete, Search) ---
+
+    // Event delegation for Edit and Delete buttons
+    clientTableBody.addEventListener('click', function(e) {
+        const target = e.target;
+        const clientId = target.dataset.id;
+        if (!clientId) return; // Not an action button
+
+        if (target.classList.contains('action-edit')) {
+            // Edit: Redirect to client-form.html with the client ID as a query parameter
+            window.location.href = `client-form.html?id=${clientId}`;
+        } else if (target.classList.contains('action-delete')) {
+            // Delete: Prompt for confirmation
+            if (confirm(`Are you sure you want to delete the client with ID: ${clientId}?`)) {
+                allClients = allClients.filter(client => client.id !== clientId);
+                saveClients(allClients);
+                renderClientList(allClients); // Re-render the list
+            }
+        }
+    });
+
+    // Search functionality
+    searchButton.addEventListener('click', handleSearch);
+    searchInput.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') {
+            handleSearch();
+        } else if (searchInput.value === '') {
+            // Live-update when clearing the search bar
+            renderClientList(getClients());
+        }
+    });
+
+    function handleSearch() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        const clients = getClients(); // Always search the full list
+        
+        if (searchTerm === '') {
+            renderClientList(clients);
+            return;
+        }
+
+        const filteredClients = clients.filter(client => 
+            client.fullName.toLowerCase().includes(searchTerm)
+        );
+
+        renderClientList(filteredClients);
+    }
+}
+
+
+// --- Page 3: Client View (client-view.html) ---
+if (document.getElementById('clientDetails')) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const clientId = urlParams.get('id');
+
+    if (clientId) {
+        const clients = getClients();
+        const client = clients.find(c => c.id === clientId);
+
+        if (client) {
+            displayClientDetails(client);
+            fetchSuggestedExercises(client.fitnessGoal);
+        } else {
+            document.getElementById('clientDetails').innerHTML = '<p>Client not found.</p>';
+        }
+    } else {
+        document.getElementById('clientDetails').innerHTML = '<p>Invalid client ID.</p>';
+    }
+
+    /**
+     * Populates the client details section.
+     */
+    function displayClientDetails(client) {
+        document.getElementById('clientName').textContent = client.fullName;
+        document.getElementById('detailEmail').textContent = client.email;
+        document.getElementById('detailPhone').textContent = client.phone || 'N/A';
+        document.getElementById('detailGoal').textContent = client.fitnessGoal;
+        document.getElementById('detailStartDate').textContent = client.startDate;
+        document.getElementById('detailHistory').textContent = client.trainingHistory || 'No detailed history available.';
+    }
+
+    /**
+     * Fetches suggested exercises from the Wger API.
+     */
+    async function fetchSuggestedExercises(goal) {
+        const exerciseListEl = document.getElementById('suggestedExercisesList');
+        exerciseListEl.innerHTML = '<li>Loading suggestions...</li>';
+        const apiKey = 'YOUR_WGER_API_KEY_IF_REQUIRED'; // Wger is generally open, but keep this in mind for other APIs
+
+        // Map goal to a muscle group ID (Wger API requires integer IDs)
+        // This is a simplification. Actual mapping would be more complex.
+        // E.g., 10: Abs, 8: Biceps, 1: Shoulders, 11: Back, 3: Chest, 13: Triceps
+        let muscleId = 1; // Default to shoulders
+
+        switch (goal.toLowerCase()) {
+            case 'weightloss':
+            case 'generalfitness':
+                // For general fitness, target large muscle groups (e.g., Back - 11 or Chest - 3)
+                muscleId = [3, 11, 14, 15][Math.floor(Math.random() * 4)]; // Randomize major groups
+                break;
+            case 'musclegain':
+                // For muscle gain, target an isolation muscle (e.g., Biceps - 8 or Triceps - 13)
+                muscleId = [8, 13, 10][Math.floor(Math.random() * 3)]; 
+                break;
+            default:
+                muscleId = 1; 
+        }
+
+        try {
+            // Using Wger's exercise endpoint, filtering by a muscle group
+            const response = await fetch(`https://wger.de/api/v2/exercise/?muscles=${muscleId}&language=2&limit=20`);
+            const data = await response.json();
+            
+            const exercises = data.results;
+            
+            if (exercises && exercises.length > 0) {
+                exerciseListEl.innerHTML = ''; // Clear loading message
+
+                // Select 5 unique random exercises
+                const suggested = [];
+                while (suggested.length < 5 && exercises.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * exercises.length);
+                    const exercise = exercises.splice(randomIndex, 1)[0]; // Pull and remove
+                    suggested.push(exercise);
+                }
+                
+                suggested.forEach(exercise => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = exercise.name;
+                    exerciseListEl.appendChild(listItem);
+                });
+            } else {
+                exerciseListEl.innerHTML = '<li>No specific exercises found for this goal.</li>';
+            }
+        } catch (error) {
+            console.error('Error fetching exercises from Wger:', error);
+            exerciseListEl.innerHTML = '<li>Failed to load suggested exercises. Try again later.</li>';
+        }
+    }
+}
