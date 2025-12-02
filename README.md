@@ -1,39 +1,54 @@
-# FitCRM-Simple-Client-Manager-for-a-Fitness-Program
-
 FitCRM – Simple Client Manager for a Fitness Program
-Project Overview
-FitCRM is a lightweight, frontend-only Client Relationship Management (CRM) web application designed specifically for fitness professionals. Its purpose is to provide an easy-to-use interface for managing basic client information and tracking their fitness goals without the complexity of a full-stack system.
+This is a Frontend-only client relationship management (CRM) application designed specifically for fitness instructors, personal trainers, and small gym owners. It provides a lightweight, browser-based tool to manage client information and track fitness goals using HTML, CSS, and JavaScript.
 
-Live Demo
-You can view the deployed version of the application here:
+Features
+FitCRM implements a three-page structure with data persistence using the browser's localStorage and integration with an external API for workout suggestions.
 
-(https://mariamsho.github.io/FitCRM-Simple-Client-Manager-for-a-Fitness-Program/)
+Page 1: New Client Form (client-form.html)
+Add Client: Allows input of client details (Name, Email, Phone, Goal, Start Date, History).
 
-Core Features
-This project meets the requirements for a responsive, two-page static application using only HTML and CSS.
+Data Persistence: Saves all client information directly to the browser's localStorage.
 
-1. New Client Form (client-form.html)
-A clean form layout using CSS Grid to collect essential client details: Full Name, Age, Gender, Email, Phone, Fitness Goal, and Membership Start Date.
+Form Validation: Basic HTML5 validation ensures required fields (e.g., Name, Email) are completed and the email format is correct.
 
-The "Add Client" button is a placeholder and does not currently save or process data.
+Edit Client: The same form is repurposed to repopulate existing client data when accessed via the "Edit" button from the Client List.
 
-2. Client List View (client-list.html)
-A responsive table displaying 10 sample clients with their Name, Email, Phone, Fitness Goal, and Membership Start Date.
+Page 2: Client List View (client-list.html)
+Display: Renders a dynamic table listing all clients retrieved from localStorage.
 
-Action buttons (Edit/Delete) are included as functional placeholders.
+Search: Implements a search function to filter the client list by Client Name.
 
-A search box is provided for fetching clients by name.
+Delete: Removes a client permanently from the list and localStorage, requiring a confirmation prompt before execution.
 
-3. Responsive Design
-The layout utilizes CSS Flexbox and Grid to ensure optimal display on both desktop and mobile devices.
+Edit: Redirects to the client-form.html with the client's unique ID to enable data update.
 
-Non-critical table columns (Phone, Goal, Start Date) are hidden on mobile using media queries to maintain readability and enhance the user experience on small screens.
+View: Clicking anywhere on a client's row (excluding action buttons) redirects to the dedicated Client View page.
 
-Technologies Used
-HTML5
+Page 3: Client View (client-view.html)
+Details Display: Shows all stored client information, including Name, Email, Phone, Fitness Goal, Membership Start Date, and Training History.
 
-CSS3
+API Integration: Fetches suggested exercises for the next session by integrating with the Wger REST API. It grabs 5 exercises relevant to the client's primary fitness goal.
 
-CSS Flexbox and Grid (for layout and responsiveness)
+Technology Stack
+HTML5: Structure
 
-Deployed through Github pages
+CSS3: Styling and Responsive Design
+
+JavaScript (ES6+): Core application logic, DOM manipulation, data management.
+
+Local Storage API: Data Persistence.
+
+Wger API: External REST API used for workout suggestions.
+
+File Structure
+The project follows a clean, modular structure:
+
+fitcrm/
+├── index.html                  (Homepage)
+├── client-form.html            (Add/Edit Client Form)
+├── client-list.html            (Client Directory/List)
+├── client-view.html            (Single Client Details)
+├── css/
+│   └── styles.css              (All application styling, including responsive design)
+└── js/
+    └── main.js                 (All JavaScript logic: Data CRUD, API calls, DOM rendering)
