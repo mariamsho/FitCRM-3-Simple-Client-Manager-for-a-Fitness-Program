@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitCRM - Client Details</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header class="navbar">
+        <h1><a href="index.html">FitCRM</a></h1>
+        <nav>
+            <a href="client-list.html">Client List</a>
+        </nav>
+    </header>
+    <main class="container">
+        <h2 id="clientName">Loading Client Details...</h2>
+
+        <div class="client-view-grid" id="clientDetails">
+            <section class="detail-card">
+                <h3>Contact & Membership</h3>
+                <p><strong>Email:</strong> <span id="detailEmail"></span></p>
+                <p><strong>Phone:</strong> <span id="detailPhone"></span></p>
+                <p><strong>Membership Start:</strong> <span id="detailStartDate"></span></p>
+                <p><strong>Fitness Goal:</strong> <span id="detailGoal"></span></p>
+            </section>
+
+            <section class="detail-card large-section">
+                <h3>Training History Notes</h3>
+                <p id="detailHistory">No detailed history available.</p>
+            </section>
+
+            <section class="detail-card large-section">
+                <h3>Suggested Exercises for Next Session</h3>
+                <ul id="suggestedExercisesList">
+                    <li>Loading suggested exercises...</li>
+                </ul>
+            </section>
+        </div>
+    </main>
+    <script src="js/main.js"></script>
+</body>
+</html>
