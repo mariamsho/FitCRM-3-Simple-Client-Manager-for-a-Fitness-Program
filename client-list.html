@@ -14,11 +14,11 @@
         </nav>
     </header>
     <main class="container">
-        <h2>Client Directory (10 Clients)</h2>
+        <h2>Client Directory (Loading...)</h2> 
         
         <div class="search-bar">
             <input type="text" id="clientSearch" placeholder="Search by Client Name...">
-            <button class="button secondary">🔍 Search</button>
+            <button class="button secondary" id="searchButton">🔍 Search</button>
         </div>
 
         <div class="client-table-wrapper">
@@ -33,120 +33,11 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>Alex Johnson</td>
-                        <td>alex@example.com</td>
-                        <td class="hide-on-mobile">555-1234</td>
-                        <td class="hide-on-mobile">Weight Loss</td>
-                        <td class="hide-on-mobile">2023-01-15</td>
-                        <td>
-                            <button class="action-edit">Edit</button>
-                            <button class="action-delete">Delete</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Sarah Chen</td>
-                        <td>sarah@example.com</td>
-                        <td class="hide-on-mobile">555-5678</td>
-                        <td class="hide-on-mobile">Muscle Gain</td>
-                        <td class="hide-on-mobile">2023-03-20</td>
-                        <td>
-                            <button class="action-edit">Edit</button>
-                            <button class="action-delete">Delete</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Michael Lee</td>
-                        <td>mike@example.com</td>
-                        <td class="hide-on-mobile">555-9012</td>
-                        <td class="hide-on-mobile">General Fitness</td>
-                        <td class="hide-on-mobile">2023-05-10</td>
-                        <td>
-                            <button class="action-edit">Edit</button>
-                            <button class="action-delete">Delete</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Emily Davis</td>
-                        <td>emily@example.com</td>
-                        <td class="hide-on-mobile">555-3456</td>
-                        <td class="hide-on-mobile">Weight Loss</td>
-                        <td class="hide-on-mobile">2023-07-01</td>
-                        <td>
-                            <button class="action-edit">Edit</button>
-                            <button class="action-delete">Delete</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>David Kim</td>
-                        <td>david@example.com</td>
-                        <td class="hide-on-mobile">555-7890</td>
-                        <td class="hide-on-mobile">Muscle Gain</td>
-                        <td class="hide-on-mobile">2023-08-25</td>
-                        <td>
-                            <button class="action-edit">Edit</button>
-                            <button class="action-delete">Delete</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Jessica Brown</td>
-                        <td>jessica@example.com</td>
-                        <td class="hide-on-mobile">555-2345</td>
-                        <td class="hide-on-mobile">General Fitness</td>
-                        <td class="hide-on-mobile">2023-10-12</td>
-                        <td>
-                            <button class="action-edit">Edit</button>
-                            <button class="action-delete">Delete</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Robert Green</td>
-                        <td>robert@example.com</td>
-                        <td class="hide-on-mobile">555-6789</td>
-                        <td class="hide-on-mobile">Weight Loss</td>
-                        <td class="hide-on-mobile">2024-01-05</td>
-                        <td>
-                            <button class="action-edit">Edit</button>
-                            <button class="action-delete">Delete</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Lisa White</td>
-                        <td>lisa@example.com</td>
-                        <td class="hide-on-mobile">555-0123</td>
-                        <td class="hide-on-mobile">Muscle Gain</td>
-                        <td class="hide-on-mobile">2024-02-18</td>
-                        <td>
-                            <button class="action-edit">Edit</button>
-                            <button class="action-delete">Delete</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Chris Martin</td>
-                        <td>chris@example.com</td>
-                        <td class="hide-on-mobile">555-4567</td>
-                        <td class="hide-on-mobile">General Fitness</td>
-                        <td class="hide-on-mobile">2024-04-01</td>
-                        <td>
-                            <button class="action-edit">Edit</button>
-                            <button class="action-delete">Delete</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Nicole Hall</td>
-                        <td>nicole@example.com</td>
-                        <td class="hide-on-mobile">555-8901</td>
-                        <td class="hide-on-mobile">Weight Loss</td>
-                        <td class="hide-on-mobile">2024-06-15</td>
-                        <td>
-                            <button class="action-edit">Edit</button>
-                            <button class="action-delete">Delete</button>
-                        </td>
-                    </tr>
-                </tbody>
+                <tbody id="clientTableBody">
+                    </tbody>
             </table>
         </div>
     </main>
+    <script src="js/main.js"></script>
 </body>
 </html>
