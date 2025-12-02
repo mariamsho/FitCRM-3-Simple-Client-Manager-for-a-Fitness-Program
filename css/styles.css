@@ -1,0 +1,265 @@
+/* Basic Reset and Variables */
+:root {
+    --primary-color: #2e7d32; /* A shade of green for fitness vibe */
+    --secondary-color: #0288d1; /* A shade of blue */
+    --background-color: #f4f4f9;
+    --text-color: #333;
+    --light-border: #ddd;
+    --shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--background-color);
+}
+
+/* --- Layout and Containers --- */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.centered-nav {
+    text-align: center;
+    padding: 40px;
+}
+
+/* --- Navigation Bar --- */
+.navbar {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--shadow);
+}
+
+.navbar h1 a {
+    color: white;
+    text-decoration: none;
+}
+
+.navbar nav a {
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.navbar nav a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* --- Buttons --- */
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s, opacity 0.3s;
+    text-align: center;
+}
+
+.primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.primary:hover {
+    background-color: #388e3c; /* Darker primary */
+}
+
+.secondary {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.secondary:hover {
+    background-color: #0277bd; /* Darker secondary */
+}
+
+.action-button {
+    width: 100%;
+    margin-top: 20px;
+    font-size: 1.1em;
+}
+
+.main-navigation a {
+    margin: 10px;
+}
+
+/* --- Form Styling (Flexbox/Grid for Layout) --- */
+.client-form {
+    padding: 20px 0;
+}
+
+.form-grid {
+    /* Use CSS Grid for the two-column layout on desktop */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+    padding: 10px;
+    border: 1px solid var(--light-border);
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+.large-group {
+    /* Make the 'Fitness Goal' span across the full width */
+    grid-column: 1 / -1;
+}
+
+
+/* --- Client List (Table Styling) --- */
+.client-table-wrapper {
+    overflow-x: auto; /* Allows horizontal scrolling on small screens */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--light-border);
+}
+
+th {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+tbody tr:hover {
+    background-color: #e8f5e9; /* Light green hover effect */
+}
+
+/* Action Buttons in Table */
+td button {
+    padding: 5px 10px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85em;
+}
+
+.action-edit {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.action-delete {
+    background-color: #e57373; /* Light red */
+    color: white;
+}
+
+/* Search Bar (Flexbox) */
+.search-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: stretch;
+}
+
+.search-bar input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid var(--light-border);
+    border-radius: 4px;
+}
+
+
+/* --- Responsive Design (Media Queries) --- */
+
+/* Mobile view (screens up to 768px) */
+@media (max-width: 768px) {
+    
+    .container {
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+        box-shadow: none;
+        padding: 10px;
+    }
+
+    /* Forms: Stack columns vertically */
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .large-group {
+        grid-column: 1 / 1; /* Reset to single column */
+    }
+
+    /* Table: Hide less crucial columns */
+    .hide-on-mobile {
+        display: none;
+    }
+
+    /* Table Actions: Make buttons full width if necessary, or stack them */
+    td button {
+        display: block;
+        width: 100%;
+        margin: 5px 0;
+    }
+    
+    /* Search Bar: Stack input and button */
+    .search-bar {
+        flex-direction: column;
+    }
+}
+
+/* Small adjustments for very small screens (phones) */
+@media (max-width: 480px) {
+    .navbar {
+        flex-direction: column;
+        text-align: center;
+        padding: 10px;
+    }
+    .navbar nav {
+        margin-top: 10px;
+    }
+    
+    /* Ensure the table is still readable */
+    th, td {
+        padding: 8px 10px;
+    }
+}
